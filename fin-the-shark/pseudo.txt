@@ -1,0 +1,9 @@
+fin movement:
+	if moving, dont apply friection
+	if not moving, apply friction
+	
+	apply friection:
+		if direction x = 0;
+			velocity x becomes 0
+		if direction y = 0;
+			velocity y becomes 0

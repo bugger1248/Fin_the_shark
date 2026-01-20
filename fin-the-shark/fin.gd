@@ -5,27 +5,34 @@ extends CharacterBody2D
 
 @export var max_speed : int = 100
 
+var direction_x : int = 0
+var direction_y : int = 0
+
 func _process(delta: float) -> void:
 
-	var is_moving_x : bool = false
-	var is_moving_y : bool = false
 
+	direction_x = 0
+	direction_y = 0
 
 	if Input.is_action_pressed("move_down"):
-		velocity.y += acceleration * delta
+		direction_y = 1
 	if Input.is_action_pressed("move_up"):
-		velocity.y -= acceleration * delta
+		direction_y = -1
+	
+
 	if Input.is_action_pressed("move_left"):
-		velocity.x -= acceleration * delta
+		direction_x = -1
 	if Input.is_action_pressed("move_right"):
-		velocity.x += acceleration * delta
+		direction_x = 1
 
 
-	#
+	velocity.x += direction_x * acceleration * delta
+	velocity.y += direction_y * acceleration * delta
 
 	clamp_velocity()
 	
 	
+	apply_friction()
 	position += velocity * delta
 	print(velocity)
 
@@ -40,5 +47,27 @@ func clamp_velocity() -> void:
 	elif velocity.y < max_speed * (-1):
 		velocity.y = max_speed * (-1)
 
-func apply_friction(on_x : bool, on_y : bool) -> void:
-	velocity = velocity.move_toward(Vector2.ZERO,friction)
+func apply_friction() -> void:
+	
+	
+	
+	if direction_x == 0:
+		
+		if abs(velocity.x) < friction:
+			velocity.x = 0
+		
+		if velocity.x > 0:
+			velocity.x -= friction
+		elif velocity.x < 0:
+			velocity.x += friction
+	
+	if direction_y == 0:
+		
+		if abs(velocity.y) < friction:
+			velocity.y = 0
+		
+		if velocity.y > 0:
+			velocity.y -= friction
+		elif velocity.y < 0:
+			velocity.y += friction
+	

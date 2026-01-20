@@ -10,7 +10,7 @@ size = Vector2(130, 130)
 motion_mode = 1
 script = ExtResource("1_kp3xx")
 acceleration = 2000
-friction = 30
+friction = 15
 max_speed = 600
 
 [node name="Icon" type="Sprite2D" parent="."]
