@@ -7,3 +7,7 @@ fin movement:
 			velocity x becomes 0
 		if direction y = 0;
 			velocity y becomes 0
+
+
+Action menu:
+	WASD to choose between actions

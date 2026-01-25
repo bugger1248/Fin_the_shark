@@ -1,20 +1,20 @@
 [gd_scene load_steps=4 format=3 uid="uid://dt1yjfqmit6yd"]
 
 [ext_resource type="Script" uid="uid://di7lr8lhhp7k2" path="res://fin.gd" id="1_kp3xx"]
-[ext_resource type="Texture2D" uid="uid://cy2cmyvb3omih" path="res://icon.svg" id="2_igkyy"]
+[ext_resource type="Texture2D" uid="uid://x5msuys4kbcn" path="res://Fin.png" id="2_kp3xx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3jrsg"]
-size = Vector2(130, 130)
+size = Vector2(26, 26)
 
 [node name="Fin" type="CharacterBody2D"]
 motion_mode = 1
 script = ExtResource("1_kp3xx")
-acceleration = 2000
-friction = 15
-max_speed = 600
+acceleration = 400
+friction = 3
+max_speed = 120
 
-[node name="Icon" type="Sprite2D" parent="."]
-texture = ExtResource("2_igkyy")
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_kp3xx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_3jrsg")
