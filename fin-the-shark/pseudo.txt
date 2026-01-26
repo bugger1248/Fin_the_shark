@@ -11,3 +11,9 @@ fin movement:
 
 Action menu:
 	WASD to choose between actions
+
+
+dash attack:
+	create a hit box 
+	when enters the hurtbox 
+		apply damage

@@ -5,28 +5,38 @@ extends CharacterBody2D
 
 @export var max_speed : int = 100
 
-@export var dash_speed : float = 5
+@export var dash_velocity :int = 200
 
 enum CONTROL_STATE {CAN_MOVE, CANNOT_MOVE}
+enum ACTIONS {NONE, DASH}
+
+
+var current_action : int = ACTIONS.NONE
 var current_control_state : int = CONTROL_STATE.CAN_MOVE
 
 var direction_x : int = 0
 var direction_y : int = 0
 
-var dash_final_pos : int = 320
+var dash_final_pos : int = 560
 
 var is_performing : bool = false
 
+var original_pos : Vector2
+
+@onready var hit_box : Area2D = $HitBox
+
 func _process(delta: float) -> void:
-
-
+	
+	
 	direction_x = 0
 	direction_y = 0
 	
 	if current_control_state == CONTROL_STATE.CAN_MOVE:
 		handle_movement(delta)
-
-
+	
+	if current_action == ACTIONS.DASH:
+		execute_dash()
+	
 	position += velocity * delta
 
 func clamp_velocity() -> void:
@@ -66,19 +76,32 @@ func apply_friction() -> void:
 	
 func execute_dash() -> void:
 	
-	current_control_state = CONTROL_STATE.CANNOT_MOVE
+	if current_action == ACTIONS.NONE:
+		
+		current_control_state = CONTROL_STATE.CANNOT_MOVE
+		current_action = ACTIONS.DASH
+		velocity = Vector2(dash_velocity,0)
+		
+		original_pos = position
+		
+		hit_box.monitorable = true
 	
+	if position.x >= dash_final_pos :
+		velocity = Vector2(dash_velocity * -1, 0)
+		hit_box.monitorable = false
 	
+	if position.x < original_pos.x :
+		velocity = Vector2.ZERO
+		current_action = ACTIONS.NONE
+		current_control_state = CONTROL_STATE.CAN_MOVE
+
+func _on_action_chosen(action: String) -> void:
 	
-	var dash_velocity :int = 200
-	velocity = Vector2(dash_velocity,0)
+	if current_action != ACTIONS.NONE:
+		return
 	
-	var dash_tween : Tween = create_tween()
-	var original_pos : Vector2 = position
-	var final_pos : Vector2 = Vector2(dash_final_pos, position.y)
-	
-	dash_tween.tween_property(self, "position", final_pos, 1 / dash_speed)
-	dash_tween.tween_property(self, "position", original_pos, 1 / dash_speed)
+	if action == "dash":
+		execute_dash()
 
 func handle_movement(delta : float) -> void:
 	

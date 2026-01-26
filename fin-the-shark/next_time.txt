@@ -1,0 +1,4 @@
+create hit and hurt box classes
+create actions class
+
+learn exporting

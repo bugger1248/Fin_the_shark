@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3 uid="uid://c66ara07ywcql"]
+
+[ext_resource type="PackedScene" uid="uid://dt1yjfqmit6yd" path="res://fin.tscn" id="1_e2o6t"]
+[ext_resource type="Script" uid="uid://dku3q3tqxkgjt" path="res://game.gd" id="1_feb5d"]
+[ext_resource type="PackedScene" uid="uid://ndf6qgls4d25" path="res://action_menu.tscn" id="2_feb5d"]
+[ext_resource type="PackedScene" uid="uid://dhkk5106hioql" path="res://krabby.tscn" id="4_fc0e3"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_feb5d")
+
+[node name="Fin" parent="." instance=ExtResource("1_e2o6t")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ActionMenu" parent="CanvasLayer" instance=ExtResource("2_feb5d")]
+
+[node name="Krabby" parent="." instance=ExtResource("4_fc0e3")]
