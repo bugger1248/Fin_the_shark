@@ -11,6 +11,10 @@ fin movement:
 
 Action menu:
 	WASD to choose between actions
+	create timers array where each timer is asscociated with an action
+	
+	send the timers array to the char
+	char will start the timer when action is performed
 
 
 dash attack:

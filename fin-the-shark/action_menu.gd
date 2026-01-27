@@ -3,13 +3,26 @@ extends Control
 enum MENU_DIRS {LEFT, RIGHT, UP, DOWN}
 
 var current_action : int = 0
-var actions_array : Array = ["bite", "dash"]
+var actions_array : Array[Actions]
+var timers_array : Array[Timer]
 
 signal queue_action(action:String)
 
 @onready var fin_actions_container : VBoxContainer = $HBoxContainer/FinActionsContainer
 
 func _ready() -> void:
+	
+	
+	actions_array = [
+		preload("res://bite.tres"),
+		preload("res://dash.tres")
+	]
+	
+	for i in range(actions_array.size()):
+		timers_array.append(Timer.new())
+		timers_array[i].wait_time = actions_array[i].cooldown
+		add_child(timers_array[i])
+	
 	display_chosen_action()
 
 func _process(delta: float) -> void:
@@ -47,7 +60,14 @@ func move_front(dir:MENU_DIRS):
 	display_chosen_action()
 
 func choose_action():
-	var chosen_action: String = actions_array[current_action]
+	
+	var chosen_timer : Timer = timers_array[current_action]
+	
+	var chosen_action: String = actions_array[current_action].name
+	
+	if chosen_timer.time_left > 0 :
+		print("action is timed out")
+		return
 	
 	queue_action.emit(chosen_action)
 	

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Actions" load_steps=2 format=3 uid="uid://cyj0qls770c4w"]
+
+[ext_resource type="Script" uid="uid://dcey74oowtmt0" path="res://actions.gd" id="1_bxarg"]
+
+[resource]
+script = ExtResource("1_bxarg")
+name = "dash"
+cooldown = 1.0
+metadata/_custom_type_script = "uid://dcey74oowtmt0"
