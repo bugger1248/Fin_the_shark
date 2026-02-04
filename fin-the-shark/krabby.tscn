@@ -1,10 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://dhkk5106hioql"]
+[gd_scene load_steps=10 format=3 uid="uid://dhkk5106hioql"]
 
 [ext_resource type="Script" uid="uid://cmrik5t5lqv0n" path="res://krabby.gd" id="1_tfomv"]
-[ext_resource type="Texture2D" uid="uid://cy2cmyvb3omih" path="res://icon.svg" id="1_u80xu"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_tfomv"]
-size = Vector2(94, 314)
+[ext_resource type="Texture2D" uid="uid://d1dg744h5swwm" path="res://krabby.png" id="2_vhrx4"]
+[ext_resource type="PackedScene" uid="uid://cesa2j6038xon" path="res://hurt_box.tscn" id="3_hne63"]
+[ext_resource type="PackedScene" uid="uid://d1qevhpykafk4" path="res://hit_box.tscn" id="4_vhrx4"]
 
 [sub_resource type="Animation" id="Animation_hne63"]
 length = 0.001
@@ -42,23 +41,38 @@ _data = {
 &"damage_taken": SubResource("Animation_tfomv")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vhrx4"]
+size = Vector2(172, 265)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fj46g"]
+size = Vector2(172, 294)
+
 [node name="Krabby" type="Node2D"]
 script = ExtResource("1_tfomv")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -1
-position = Vector2(571, 191)
-scale = Vector2(0.75, 2.42969)
-texture = ExtResource("1_u80xu")
-
-[node name="HurtBox" type="Area2D" parent="."]
-collision_layer = 5
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
-position = Vector2(570, 192)
-shape = SubResource("RectangleShape2D_tfomv")
+position = Vector2(480, 191)
+scale = Vector2(2, 2)
+texture = ExtResource("2_vhrx4")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_vhrx4")
 }
+
+[node name="HurtBox" parent="." instance=ExtResource("3_hne63")]
+collision_layer = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+position = Vector2(554, 214.5)
+shape = SubResource("RectangleShape2D_vhrx4")
+
+[node name="HitBox" parent="." instance=ExtResource("4_vhrx4")]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+position = Vector2(552, 199)
+shape = SubResource("RectangleShape2D_fj46g")
+debug_color = Color(0.7, 0, 0, 0.419608)

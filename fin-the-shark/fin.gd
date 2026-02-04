@@ -10,6 +10,7 @@ extends CharacterBody2D
 enum CONTROL_STATE {CAN_MOVE, CANNOT_MOVE}
 enum ACTIONS {NONE, DASH}
 
+var actions_array :Array[Actions]
 
 var current_action : int = ACTIONS.NONE
 var current_control_state : int = CONTROL_STATE.CAN_MOVE
@@ -23,7 +24,19 @@ var is_performing : bool = false
 
 var original_pos : Vector2
 
-@onready var hit_box : Area2D = $HitBox
+@onready var hit_box : HitBox = $HitBox
+@onready var animation_player : AnimationPlayer = $AnimationPlayer
+@onready var hurt_box : HurtBox = $HurtBox
+
+var health : int = 3
+
+func _ready() -> void:
+	actions_array = [
+		preload("res://bite.tres"),
+		preload("res://dash.tres")
+	]
+	
+	hurt_box.area_entered.connect(_on_hurt_box_entered)
 
 func _process(delta: float) -> void:
 	
@@ -77,7 +90,8 @@ func apply_friction() -> void:
 func execute_dash() -> void:
 	
 	if current_action == ACTIONS.NONE:
-		
+		hurt_box.monitoring = false
+		hit_box.damage = 20
 		current_control_state = CONTROL_STATE.CANNOT_MOVE
 		current_action = ACTIONS.DASH
 		velocity = Vector2(dash_velocity,0)
@@ -91,9 +105,22 @@ func execute_dash() -> void:
 		hit_box.monitorable = false
 	
 	if position.x < original_pos.x :
+		hurt_box.monitoring = true
+		actions_array[1].start_cooldown()
 		velocity = Vector2.ZERO
 		current_action = ACTIONS.NONE
 		current_control_state = CONTROL_STATE.CAN_MOVE
+
+
+func execute_bite() -> void:
+	animation_player.play("bite")
+
+func _on_hurt_box_entered(_area : Area2D) -> void:
+	health -= 1
+	animation_player.play("hit")
+	
+	if health <= 0:
+		set_process(false)
 
 func _on_action_chosen(action: String) -> void:
 	
@@ -102,7 +129,9 @@ func _on_action_chosen(action: String) -> void:
 	
 	if action == "dash":
 		execute_dash()
-
+	
+	if action == "bite":
+		execute_bite()
 func handle_movement(delta : float) -> void:
 	
 	if Input.is_action_pressed("move_down"):

@@ -21,3 +21,9 @@ dash attack:
 	create a hit box 
 	when enters the hurtbox 
 		apply damage
+
+
+boss attack:
+	idle state and attack state
+	when idle, start timer, when it's up, choose an attack
+	attack array, choose at random

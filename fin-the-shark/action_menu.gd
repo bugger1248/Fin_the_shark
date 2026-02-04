@@ -18,10 +18,15 @@ func _ready() -> void:
 		preload("res://dash.tres")
 	]
 	
-	for i in range(actions_array.size()):
-		timers_array.append(Timer.new())
-		timers_array[i].wait_time = actions_array[i].cooldown
-		add_child(timers_array[i])
+	for action in actions_array:
+		var timer = Timer.new()
+		add_child(timer)
+		timer.wait_time = action.cooldown
+		timer.one_shot = true
+		timers_array.append(timer)
+		action.timer = timer
+		
+		print("time left is : ",timer.time_left )
 	
 	display_chosen_action()
 
@@ -34,6 +39,9 @@ func _process(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("choose_action"):
 		choose_action()
+	
+	
+	display_available_action()
 
 func display_chosen_action():
 	var container_size : int = fin_actions_container.get_children().size()
@@ -43,6 +51,14 @@ func display_chosen_action():
 		else:
 			fin_actions_container.get_child(i).set("theme_override_colors/font_shadow_color",Color.TRANSPARENT)
 
+func display_available_action():
+	var container_size : int = fin_actions_container.get_child_count()
+	for i in range(container_size):
+		if timers_array[i].is_stopped():
+			fin_actions_container.get_child(i).set("theme_override_colors/font_color", Color.WHITE)
+		else:
+			fin_actions_container.get_child(i).set("theme_override_colors/font_color", Color.RED)
+			
 
 func move_front(dir:MENU_DIRS):
 	if dir == MENU_DIRS.UP:
@@ -61,13 +77,14 @@ func move_front(dir:MENU_DIRS):
 
 func choose_action():
 	
-	var chosen_timer : Timer = timers_array[current_action]
 	
 	var chosen_action: String = actions_array[current_action].name
 	
-	if chosen_timer.time_left > 0 :
-		print("action is timed out")
+	if !actions_array[current_action].timer.is_stopped():
 		return
+	
+	if actions_array[current_action].timer.time_left > 0:
+		print("action timed out")
 	
 	queue_action.emit(chosen_action)
 	

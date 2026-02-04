@@ -1,18 +1,135 @@
-[gd_scene load_steps=5 format=3 uid="uid://dt1yjfqmit6yd"]
+[gd_scene load_steps=12 format=3 uid="uid://dt1yjfqmit6yd"]
 
 [ext_resource type="Script" uid="uid://di7lr8lhhp7k2" path="res://fin.gd" id="1_kp3xx"]
 [ext_resource type="Texture2D" uid="uid://x5msuys4kbcn" path="res://Fin.png" id="2_kp3xx"]
+[ext_resource type="PackedScene" uid="uid://d1qevhpykafk4" path="res://hit_box.tscn" id="3_igkyy"]
+[ext_resource type="PackedScene" uid="uid://cesa2j6038xon" path="res://hurt_box.tscn" id="4_3jrsg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3jrsg"]
 size = Vector2(26, 26)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_kp3xx"]
+[sub_resource type="Animation" id="Animation_3jrsg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HitBox:monitorable")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("HitBox/CollisionShape2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-14, -1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_igkyy"]
+resource_name = "bite"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.28, 0.59, 0.87),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -0.352556, 0.356047, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HitBox:monitorable")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.89),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("HitBox/CollisionShape2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-14, -1), Vector2(20, -1)]
+}
+
+[sub_resource type="Animation" id="Animation_kykcv"]
+resource_name = "hit"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.26, 0.51),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 0, 0, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kykcv"]
+_data = {
+&"RESET": SubResource("Animation_3jrsg"),
+&"bite": SubResource("Animation_igkyy"),
+&"hit": SubResource("Animation_kykcv")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_igkyy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kykcv"]
+size = Vector2(43, 19)
 
 [node name="Fin" type="CharacterBody2D"]
 motion_mode = 1
 script = ExtResource("1_kp3xx")
 acceleration = 800
-friction = 6
+friction = 8
 max_speed = 300
 dash_velocity = 1000
 
@@ -23,13 +140,23 @@ texture = ExtResource("2_kp3xx")
 shape = SubResource("RectangleShape2D_3jrsg")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_kykcv")
+}
 
-[node name="HitBox" type="Area2D" parent="."]
-collision_mask = 4
-monitoring = false
+[node name="HitBox" parent="." instance=ExtResource("3_igkyy")]
+collision_mask = 8
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
-position = Vector2(14, -1)
-shape = SubResource("RectangleShape2D_kp3xx")
+position = Vector2(-14, -1)
+shape = SubResource("RectangleShape2D_igkyy")
 debug_color = Color(0.96, 0, 0, 0.419608)
+
+[node name="HurtBox" parent="." instance=ExtResource("4_3jrsg")]
+collision_layer = 2
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+position = Vector2(0.5, -0.5)
+shape = SubResource("RectangleShape2D_kykcv")

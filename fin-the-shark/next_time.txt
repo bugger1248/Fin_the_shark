@@ -1,4 +1,2 @@
-create hit and hurt box classes
-create actions class
-
-learn exporting
+general clean up
+create main menu

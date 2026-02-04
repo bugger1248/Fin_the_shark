@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://cxdpw0jsp4ud"]
+
+[ext_resource type="Script" uid="uid://chqc7wvsekb1p" path="res://hit_box.gd" id="1_et3vo"]
+[ext_resource type="Texture2D" uid="uid://cy2cmyvb3omih" path="res://icon.svg" id="2_2e587"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_et3vo"]
+size = Vector2(48, 48)
+
+[node name="Shell" type="Area2D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_et3vo")
+metadata/_custom_type_script = "uid://chqc7wvsekb1p"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-4.76837e-07, 4.76837e-07)
+scale = Vector2(0.378906, 0.378906)
+texture = ExtResource("2_2e587")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_et3vo")
