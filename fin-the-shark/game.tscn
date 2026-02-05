@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://c66ara07ywcql"]
+[gd_scene load_steps=6 format=3 uid="uid://c66ara07ywcql"]
 
 [ext_resource type="PackedScene" uid="uid://dt1yjfqmit6yd" path="res://fin.tscn" id="1_e2o6t"]
 [ext_resource type="Script" uid="uid://dku3q3tqxkgjt" path="res://game.gd" id="1_feb5d"]
 [ext_resource type="PackedScene" uid="uid://ndf6qgls4d25" path="res://action_menu.tscn" id="2_feb5d"]
+[ext_resource type="PackedScene" uid="uid://ceqjomb7xi0i5" path="res://health_container.tscn" id="4_7jktm"]
 [ext_resource type="PackedScene" uid="uid://dhkk5106hioql" path="res://krabby.tscn" id="4_fc0e3"]
 
 [node name="Game" type="Node2D"]
@@ -36,6 +37,10 @@ offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "YOU WON"
+
+[node name="HealthContainer" parent="CanvasLayer" instance=ExtResource("4_7jktm")]
+offset_top = 284.0
+offset_bottom = 307.0
 
 [node name="Krabby" parent="." instance=ExtResource("4_fc0e3")]
 

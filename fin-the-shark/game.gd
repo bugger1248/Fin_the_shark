@@ -8,6 +8,8 @@ func _ready() -> void:
 	
 	actions_menu.connect("queue_action",fin._on_action_chosen)
 	$Krabby.connect("boss_died",_on_boss_died)
+	
+	$Fin.health_changed.connect($CanvasLayer/HealthContainer._on_health_changed)
 
 func _on_boss_died():
 	$CanvasLayer/Panel.visible = true

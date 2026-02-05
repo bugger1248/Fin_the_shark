@@ -30,6 +30,8 @@ var original_pos : Vector2
 
 var health : int = 3
 
+signal health_changed(new:int)
+
 func _ready() -> void:
 	actions_array = [
 		preload("res://bite.tres"),
@@ -114,10 +116,12 @@ func execute_dash() -> void:
 
 func execute_bite() -> void:
 	animation_player.play("bite")
+	actions_array[0].start_cooldown()
 
 func _on_hurt_box_entered(_area : Area2D) -> void:
 	health -= 1
 	animation_player.play("hit")
+	health_changed.emit(health)
 	
 	if health <= 0:
 		set_process(false)
@@ -132,6 +136,7 @@ func _on_action_chosen(action: String) -> void:
 	
 	if action == "bite":
 		execute_bite()
+
 func handle_movement(delta : float) -> void:
 	
 	if Input.is_action_pressed("move_down"):
