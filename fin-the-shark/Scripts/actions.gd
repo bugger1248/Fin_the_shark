@@ -9,5 +9,4 @@ var timer : Timer
 func start_cooldown():
 	if timer:
 		timer.start()
-		print("timer started with waitime: ",timer.time_left)
 	

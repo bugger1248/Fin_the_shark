@@ -2,9 +2,7 @@ extends CharacterBody2D
 
 @export var acceleration : int = 10
 @export var friction : int = 10
-
 @export var max_speed : int = 100
-
 @export var dash_velocity :int = 200
 
 enum CONTROL_STATE {CAN_MOVE, CANNOT_MOVE}
@@ -12,16 +10,13 @@ enum ACTIONS {NONE, DASH}
 
 var actions_array :Array[Actions]
 
-var current_action : int = ACTIONS.NONE
-var current_control_state : int = CONTROL_STATE.CAN_MOVE
+var current_action : ACTIONS = ACTIONS.NONE
+var current_control_state : CONTROL_STATE = CONTROL_STATE.CAN_MOVE
 
 var direction_x : int = 0
 var direction_y : int = 0
 
 var dash_final_pos : int = 560
-
-var is_performing : bool = false
-
 var original_pos : Vector2
 
 @onready var hit_box : HitBox = $HitBox
@@ -29,14 +24,24 @@ var original_pos : Vector2
 @onready var hurt_box : HurtBox = $HurtBox
 
 var health : int = 3
+var invincibility_timer : Timer = Timer.new()
+@export var invincibility_duration : float = 2.0
+var is_invincible : bool = false
 
 signal health_changed(new:int)
+
+var playable_area : Rect2i = Rect2i(20,20,600,320)
 
 func _ready() -> void:
 	actions_array = [
 		preload("res://bite.tres"),
 		preload("res://dash.tres")
 	]
+	
+	invincibility_timer.one_shot = true
+	invincibility_timer.wait_time = invincibility_duration
+	invincibility_timer.timeout.connect(_on_invincibility_timeout)
+	add_child(invincibility_timer)
 	
 	hurt_box.area_entered.connect(_on_hurt_box_entered)
 
@@ -53,6 +58,7 @@ func _process(delta: float) -> void:
 		execute_dash()
 	
 	position += velocity * delta
+	bound_position()
 
 func clamp_velocity() -> void:
 	if velocity.x > max_speed:
@@ -119,12 +125,9 @@ func execute_bite() -> void:
 	actions_array[0].start_cooldown()
 
 func _on_hurt_box_entered(_area : Area2D) -> void:
-	health -= 1
-	animation_player.play("hit")
-	health_changed.emit(health)
-	
-	if health <= 0:
-		set_process(false)
+	apply_damage()
+
+
 
 func _on_action_chosen(action: String) -> void:
 	
@@ -157,3 +160,38 @@ func handle_movement(delta : float) -> void:
 	
 	
 	apply_friction()
+
+func bound_position():
+	if position.x < playable_area.position.x:
+		velocity.x = 0
+		position.x = playable_area.position.x
+	
+	if position.x > playable_area.end.x:
+		velocity.x = 0
+		position.x = playable_area.end.x
+	
+	if position.y > (playable_area.position.y + playable_area.size.y):
+		velocity.y = 0
+		position.y = (playable_area.position.y + playable_area.size.y)
+	
+	if position.y < playable_area.position.y:
+		velocity.y = 0
+		position.y = playable_area.position.y
+
+func _on_invincibility_timeout():
+	is_invincible = false
+	if hurt_box.has_overlapping_areas():
+		apply_damage()
+		
+
+func apply_damage():
+	if ! is_invincible:
+		health -= 1
+		animation_player.play("hit")
+		health_changed.emit(health)
+	
+	invincibility_timer.start()
+	is_invincible = true
+
+	if health <= 0:
+		set_process(false)

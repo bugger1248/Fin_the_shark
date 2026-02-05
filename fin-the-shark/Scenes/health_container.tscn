@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ceqjomb7xi0i5"]
 
-[ext_resource type="Script" uid="uid://ds4p54bnyy5e0" path="res://health_container.gd" id="1_rctsn"]
+[ext_resource type="Script" uid="uid://ds4p54bnyy5e0" path="res://Scripts/health_container.gd" id="1_rctsn"]
 
 [node name="HealthContainer" type="Label"]
 offset_right = 40.0

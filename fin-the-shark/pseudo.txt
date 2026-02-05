@@ -27,3 +27,10 @@ boss attack:
 	idle state and attack state
 	when idle, start timer, when it's up, choose an attack
 	attack array, choose at random
+
+
+invincibility:
+	after taking damage, start timer, set state to invincible
+	when timer is out, set state back to normal, check if inside a hitbox
+		if yes, take damage
+		

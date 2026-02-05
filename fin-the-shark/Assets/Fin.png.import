@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d1dg744h5swwm"
-path="res://.godot/imported/krabby.png-fc445e70bebcf7903cf4bb1066cb3683.ctex"
+uid="uid://x5msuys4kbcn"
+path="res://.godot/imported/Fin.png-8c61105ce94154595aae8d65c6a5dea2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://krabby.png"
-dest_files=["res://.godot/imported/krabby.png-fc445e70bebcf7903cf4bb1066cb3683.ctex"]
+source_file="res://Assets/Fin.png"
+dest_files=["res://.godot/imported/Fin.png-8c61105ce94154595aae8d65c6a5dea2.ctex"]
 
 [params]
 

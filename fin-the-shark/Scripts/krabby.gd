@@ -12,7 +12,7 @@ var state : STATES = STATES.IDLE
 
 var attack_array 
 
-var shell_scene := preload("res://shell.tscn")
+var shell_scene := preload("res://Scenes/shell.tscn")
 
 signal boss_died
 

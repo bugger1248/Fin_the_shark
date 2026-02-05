@@ -1,9 +1,9 @@
 [gd_scene load_steps=11 format=3 uid="uid://dhkk5106hioql"]
 
-[ext_resource type="Script" uid="uid://cmrik5t5lqv0n" path="res://krabby.gd" id="1_tfomv"]
-[ext_resource type="Texture2D" uid="uid://d1dg744h5swwm" path="res://krabby.png" id="2_vhrx4"]
-[ext_resource type="PackedScene" uid="uid://cesa2j6038xon" path="res://hurt_box.tscn" id="3_hne63"]
-[ext_resource type="PackedScene" uid="uid://d1qevhpykafk4" path="res://hit_box.tscn" id="4_vhrx4"]
+[ext_resource type="Script" uid="uid://cmrik5t5lqv0n" path="res://Scripts/krabby.gd" id="1_tfomv"]
+[ext_resource type="Texture2D" uid="uid://d1dg744h5swwm" path="res://Assets/krabby.png" id="2_vhrx4"]
+[ext_resource type="PackedScene" uid="uid://cesa2j6038xon" path="res://Scenes/hurt_box.tscn" id="3_hne63"]
+[ext_resource type="PackedScene" uid="uid://d1qevhpykafk4" path="res://Scenes/hit_box.tscn" id="4_vhrx4"]
 
 [sub_resource type="Animation" id="Animation_hne63"]
 length = 0.001

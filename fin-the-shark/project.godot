@@ -22,6 +22,14 @@ window/size/viewport_height=360
 window/size/mode=3
 window/stretch/mode="canvas_items"
 
+[file_customization]
+
+folder_colors={
+"res://Assets/": "blue",
+"res://Scenes/": "red",
+"res://Scripts/": "green"
+}
+
 [input]
 
 move_down={

@@ -26,7 +26,6 @@ func _ready() -> void:
 		timers_array.append(timer)
 		action.timer = timer
 		
-		print("time left is : ",timer.time_left )
 	
 	display_chosen_action()
 
@@ -83,9 +82,7 @@ func choose_action():
 	if !actions_array[current_action].timer.is_stopped():
 		return
 	
-	if actions_array[current_action].timer.time_left > 0:
-		print("action timed out")
+
 	
 	queue_action.emit(chosen_action)
 	
-	print("this action was chosen : ",chosen_action)
