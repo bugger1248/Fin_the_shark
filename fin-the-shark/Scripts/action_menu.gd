@@ -11,23 +11,7 @@ signal queue_action(action:String)
 @onready var fin_actions_container : VBoxContainer = $HBoxContainer/FinActionsContainer
 
 func _ready() -> void:
-	
-	
-	actions_array = [
-		preload("res://bite.tres"),
-		preload("res://dash.tres")
-	]
-	
-	for action in actions_array:
-		var timer = Timer.new()
-		add_child(timer)
-		timer.wait_time = action.cooldown
-		timer.one_shot = true
-		timers_array.append(timer)
-		action.timer = timer
-		
-	
-	display_chosen_action()
+	set_process(false)
 
 func _process(delta: float) -> void:
 	
@@ -75,8 +59,6 @@ func move_front(dir:MENU_DIRS):
 	display_chosen_action()
 
 func choose_action():
-	
-	
 	var chosen_action: String = actions_array[current_action].name
 	
 	if !actions_array[current_action].timer.is_stopped():
@@ -85,4 +67,17 @@ func choose_action():
 
 	
 	queue_action.emit(chosen_action)
+
+
+func initialize_info(info:Dictionary):
+	actions_array.append_array(info["actions"])
 	
+	for action in actions_array:
+		action.initialize_action()
+		var timer = action.timer
+		add_child(timer)
+		timers_array.append(timer)
+	
+	set_process(true)
+	
+	display_chosen_action()

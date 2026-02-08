@@ -1,6 +1,5 @@
-[gd_scene load_steps=6 format=3 uid="uid://c66ara07ywcql"]
+[gd_scene load_steps=5 format=3 uid="uid://c66ara07ywcql"]
 
-[ext_resource type="PackedScene" uid="uid://dt1yjfqmit6yd" path="res://Scenes/fin.tscn" id="1_e2o6t"]
 [ext_resource type="Script" uid="uid://dku3q3tqxkgjt" path="res://Scripts/game.gd" id="1_feb5d"]
 [ext_resource type="PackedScene" uid="uid://ndf6qgls4d25" path="res://Scenes/action_menu.tscn" id="2_feb5d"]
 [ext_resource type="PackedScene" uid="uid://ceqjomb7xi0i5" path="res://Scenes/health_container.tscn" id="4_7jktm"]
@@ -8,8 +7,6 @@
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_feb5d")
-
-[node name="Fin" parent="." instance=ExtResource("1_e2o6t")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -51,3 +48,24 @@ offset_right = 326.0
 offset_bottom = 67.0
 theme_override_font_sizes/font_size = 50
 text = "100"
+
+[node name="Label2" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 136.0
+offset_top = 104.0
+offset_right = 457.0
+offset_bottom = 323.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+text = "3"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="change_label_text"]

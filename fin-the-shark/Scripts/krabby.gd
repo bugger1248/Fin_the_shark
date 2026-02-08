@@ -7,8 +7,8 @@ var health_label : Label
 var attack_interval : float = 3.0
 var attack_timer : Timer = Timer.new()
 
-enum STATES {IDLE, ATTACK}
-var state : STATES = STATES.IDLE
+enum STATES {IDLE, ATTACK, STANDBY}
+var state : STATES = STATES.STANDBY
 
 var attack_array 
 
@@ -25,8 +25,10 @@ func _ready() -> void:
 	attack_timer.wait_time = attack_interval
 	attack_timer.timeout.connect(_on_attack_timerout)
 	add_child(attack_timer)
+
+func exit_standby() -> void:
 	attack_timer.start()
-	
+	state = STATES.IDLE
 
 func _on_area_entered(area:Area2D):
 	

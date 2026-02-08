@@ -1,2 +1,1 @@
-general clean up
-create main menu
+fix death status

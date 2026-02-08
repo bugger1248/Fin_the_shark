@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dt1yjfqmit6yd"]
+[gd_scene load_steps=14 format=3 uid="uid://dt1yjfqmit6yd"]
 
 [ext_resource type="Script" uid="uid://di7lr8lhhp7k2" path="res://Scripts/fin.gd" id="1_kp3xx"]
 [ext_resource type="Texture2D" uid="uid://x5msuys4kbcn" path="res://Assets/Fin.png" id="2_kp3xx"]
@@ -13,92 +13,96 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:rotation")
+tracks/0/path = NodePath(".:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("HitBox:monitorable")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("HitBox/CollisionShape2D:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-14, -1)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".:modulate")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Color(1, 1, 1, 1)]
 }
-
-[sub_resource type="Animation" id="Animation_igkyy"]
-resource_name = "bite"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.28, 0.59, 0.87),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [0.0, -0.352556, 0.356047, 0.0]
-}
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("HitBox:monitorable")
+tracks/1/path = NodePath("Sprite:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.89),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true, false]
+"values": [0]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("HitBox/CollisionShape2D:position")
+tracks/2/path = NodePath(".:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.1),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(-14, -1), Vector2(20, -1)]
+"values": [Vector2(0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_kykcv"]
+[sub_resource type="Animation" id="Animation_igkyy"]
+resource_name = "bite"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.49),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [1, 2, 3]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.2, 0.49),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"execute_bite"
+}, {
+"args": [],
+"method": &"finish_bite"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_iqerj"]
+resource_name = "standby"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-45, 190), Vector2(80, 190)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kykcv"]
+_data = {
+&"RESET": SubResource("Animation_3jrsg"),
+&"bite": SubResource("Animation_igkyy"),
+&"standby": SubResource("Animation_iqerj")
+}
+
+[sub_resource type="Animation" id="Animation_dqx5i"]
 resource_name = "hit"
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -113,11 +117,9 @@ tracks/0/keys = {
 "values": [Color(1, 1, 1, 1), Color(1, 0, 0, 1), Color(1, 1, 1, 1)]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_kykcv"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_iqerj"]
 _data = {
-&"RESET": SubResource("Animation_3jrsg"),
-&"bite": SubResource("Animation_igkyy"),
-&"hit": SubResource("Animation_kykcv")
+&"hit": SubResource("Animation_dqx5i")
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_igkyy"]
@@ -135,6 +137,7 @@ dash_velocity = 1000
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture = ExtResource("2_kp3xx")
+hframes = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_3jrsg")
@@ -144,13 +147,19 @@ libraries = {
 &"": SubResource("AnimationLibrary_kykcv")
 }
 
+[node name="DamagePlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_iqerj")
+}
+
 [node name="HitBox" parent="." instance=ExtResource("3_igkyy")]
+position = Vector2(40, 0)
 collision_mask = 8
-monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
 position = Vector2(-14, -1)
 shape = SubResource("RectangleShape2D_igkyy")
+disabled = true
 debug_color = Color(0.96, 0, 0, 0.419608)
 
 [node name="HurtBox" parent="." instance=ExtResource("4_3jrsg")]

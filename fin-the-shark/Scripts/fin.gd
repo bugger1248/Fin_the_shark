@@ -6,12 +6,14 @@ extends CharacterBody2D
 @export var dash_velocity :int = 200
 
 enum CONTROL_STATE {CAN_MOVE, CANNOT_MOVE}
-enum ACTIONS {NONE, DASH}
+enum ACTIONS {NONE, DASH, BITE}
+enum STATES {STANDBY, READY, DEAD}
 
 var actions_array :Array[Actions]
 
 var current_action : ACTIONS = ACTIONS.NONE
 var current_control_state : CONTROL_STATE = CONTROL_STATE.CAN_MOVE
+var current_state : STATES = STATES.STANDBY
 
 var direction_x : int = 0
 var direction_y : int = 0
@@ -33,6 +35,12 @@ signal health_changed(new:int)
 var playable_area : Rect2i = Rect2i(20,20,600,320)
 
 func _ready() -> void:
+	hurt_box.area_entered.connect(_on_hurt_box_entered)
+	animation_player.play("standby")
+	set_process(false)
+	
+
+func initialize() -> void:
 	actions_array = [
 		preload("res://bite.tres"),
 		preload("res://dash.tres")
@@ -43,10 +51,21 @@ func _ready() -> void:
 	invincibility_timer.timeout.connect(_on_invincibility_timeout)
 	add_child(invincibility_timer)
 	
-	hurt_box.area_entered.connect(_on_hurt_box_entered)
+	
+func exit_standby():
+	current_state = STATES.READY
+	set_process(true)
+	
+
+func send_info() -> Dictionary:
+	var info_dict : Dictionary = {
+		"actions" = actions_array,
+		"health" = health
+	}
+	
+	return info_dict
 
 func _process(delta: float) -> void:
-	
 	
 	direction_x = 0
 	direction_y = 0
@@ -94,7 +113,7 @@ func apply_friction() -> void:
 			velocity.y -= friction
 		elif velocity.y < 0:
 			velocity.y += friction
-	
+
 func execute_dash() -> void:
 	
 	if current_action == ACTIONS.NONE:
@@ -106,30 +125,42 @@ func execute_dash() -> void:
 		
 		original_pos = position
 		
-		hit_box.monitorable = true
+		hit_box.enable_collision()
 	
 	if position.x >= dash_final_pos :
 		velocity = Vector2(dash_velocity * -1, 0)
-		hit_box.monitorable = false
+		hit_box.disable_collision()
 	
-	if position.x < original_pos.x :
+	if position.x < original_pos.x  :
 		hurt_box.monitoring = true
 		actions_array[1].start_cooldown()
 		velocity = Vector2.ZERO
 		current_action = ACTIONS.NONE
 		current_control_state = CONTROL_STATE.CAN_MOVE
 
-
 func execute_bite() -> void:
-	animation_player.play("bite")
-	actions_array[0].start_cooldown()
+	
+	if current_action == ACTIONS.NONE:
+		animation_player.play("bite")
+		current_action = ACTIONS.BITE
+		actions_array[0].start_cooldown()
+		return
+		
+	if current_action == ACTIONS.BITE:
+		
+		hit_box.damage = 40
+		hit_box.enable_collision()
+
+func finish_bite() -> void:
+	current_action = ACTIONS.NONE
+	hit_box.disable_collision()
 
 func _on_hurt_box_entered(_area : Area2D) -> void:
 	apply_damage()
 
-
-
 func _on_action_chosen(action: String) -> void:
+	if current_state != STATES.READY:
+		return
 	
 	if current_action != ACTIONS.NONE:
 		return
@@ -162,6 +193,10 @@ func handle_movement(delta : float) -> void:
 	apply_friction()
 
 func bound_position():
+	
+	if current_control_state == CONTROL_STATE.CANNOT_MOVE:
+		return
+	
 	if position.x < playable_area.position.x:
 		velocity.x = 0
 		position.x = playable_area.position.x
@@ -178,20 +213,27 @@ func bound_position():
 		velocity.y = 0
 		position.y = playable_area.position.y
 
+func is_out_of_bound() -> bool:
+	return not playable_area.has_point(position)
+	
+
 func _on_invincibility_timeout():
 	is_invincible = false
 	if hurt_box.has_overlapping_areas():
 		apply_damage()
-		
 
 func apply_damage():
+	if current_state == STATES.DEAD:
+		return
+		
 	if ! is_invincible:
 		health -= 1
-		animation_player.play("hit")
+		$DamagePlayer.play("hit")
 		health_changed.emit(health)
 	
 	invincibility_timer.start()
 	is_invincible = true
 
 	if health <= 0:
+		current_state = STATES.DEAD
 		set_process(false)
