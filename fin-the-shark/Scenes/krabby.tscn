@@ -1,9 +1,43 @@
-[gd_scene load_steps=11 format=3 uid="uid://dhkk5106hioql"]
+[gd_scene load_steps=15 format=3 uid="uid://dhkk5106hioql"]
 
 [ext_resource type="Script" uid="uid://cmrik5t5lqv0n" path="res://Scripts/krabby.gd" id="1_tfomv"]
 [ext_resource type="Texture2D" uid="uid://d1dg744h5swwm" path="res://Assets/krabby.png" id="2_vhrx4"]
 [ext_resource type="PackedScene" uid="uid://cesa2j6038xon" path="res://Scenes/hurt_box.tscn" id="3_hne63"]
 [ext_resource type="PackedScene" uid="uid://d1qevhpykafk4" path="res://Scenes/hit_box.tscn" id="4_vhrx4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4ddwm"]
+atlas = ExtResource("2_vhrx4")
+region = Rect2(0, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bwk8q"]
+atlas = ExtResource("2_vhrx4")
+region = Rect2(320, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fhabd"]
+atlas = ExtResource("2_vhrx4")
+region = Rect2(160, 0, 160, 160)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gqg1v"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4ddwm")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bwk8q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fhabd")
+}],
+"loop": true,
+"name": &"telegraph",
+"speed": 5.0
+}]
 
 [sub_resource type="Animation" id="Animation_hne63"]
 length = 0.001
@@ -55,11 +89,11 @@ script = ExtResource("1_tfomv")
 metadata/_edit_vertical_guides_ = [553.0]
 metadata/_edit_horizontal_guides_ = [312.0]
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
 z_index = -1
 position = Vector2(480, 191)
 scale = Vector2(2, 2)
-texture = ExtResource("2_vhrx4")
+sprite_frames = SubResource("SpriteFrames_gqg1v")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -86,3 +120,5 @@ debug_color = Color(0.7, 0, 0, 0.419608)
 position = Vector2(598.125, 129.25)
 shape = SubResource("RectangleShape2D_wd47r")
 debug_color = Color(0.7, 0, 0, 0.419608)
+
+[node name="Timer" type="Timer" parent="."]
