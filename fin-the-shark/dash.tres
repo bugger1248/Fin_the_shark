@@ -5,5 +5,5 @@
 [resource]
 script = ExtResource("1_bxarg")
 name = "dash"
-cooldown = 1.0
+cooldown = 2.0
 metadata/_custom_type_script = "uid://dcey74oowtmt0"

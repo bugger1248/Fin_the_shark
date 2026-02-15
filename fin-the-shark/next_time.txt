@@ -1,1 +1,4 @@
-invincibility animation
+pause menu
+shell sprite
+fix space between shells
+death menu

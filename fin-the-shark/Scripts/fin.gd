@@ -36,9 +36,7 @@ var playable_area : Rect2i = Rect2i(20,20,600,320)
 
 func _ready() -> void:
 	hurt_box.area_entered.connect(_on_hurt_box_entered)
-	animation_player.play("standby")
-	set_process(false)
-	
+	enter_standby()
 
 func initialize() -> void:
 	actions_array = [
@@ -50,7 +48,10 @@ func initialize() -> void:
 	invincibility_timer.wait_time = invincibility_duration
 	invincibility_timer.timeout.connect(_on_invincibility_timeout)
 	add_child(invincibility_timer)
-	
+
+func enter_standby():
+	animation_player.play("standby")
+	set_process(false)
 	
 func exit_standby():
 	current_state = STATES.READY

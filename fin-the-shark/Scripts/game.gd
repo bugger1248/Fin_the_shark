@@ -5,6 +5,7 @@ var fin = preload("res://Scenes/fin.tscn").instantiate()
 
 func _ready() -> void:
 	
+	
 	var actions_menu = $CanvasLayer/ActionMenu
 	fin.initialize()
 	add_child(fin)

@@ -1,7 +1,7 @@
 extends Node2D
 
 var animation_player : AnimationPlayer
-var health : int = 100
+var health : int = 200
 var health_label : Label
 
 var attack_interval : float = 5.0
@@ -58,9 +58,12 @@ func apply_damage(damage : int):
 	
 	animation_player.play("damage_taken")
 	health -= damage
-	health_label.text = str(health)
 	if health <= 0:
 		boss_died.emit()
+		health_label.text = "0"
+		health = 0
+	else:
+		health_label.text = str(health)
 
 func execute_attack():
 	#spawn shell
@@ -82,15 +85,15 @@ func _on_attack_timer_timeout():
 		state = STATES.IDLE
 
 func spawn_wave():
-	var empty_place : int = randi_range(0, 3)
+	var empty_place : int = randi_range(0, 4)
 	var shells : Array = []
 	
-	for i in range(4):
+	for i in range(5):
 		if i == empty_place:
 			continue
 		
 		var shell = shell_scene.instantiate()
-		shell.position = Vector2(530, 40 + 100*i)
+		shell.position = Vector2(530, 40 + 75*i)
 		shells.append(shell)
 	
 	for scene in shells:

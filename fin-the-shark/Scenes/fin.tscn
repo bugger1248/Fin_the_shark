@@ -102,6 +102,21 @@ _data = {
 &"standby": SubResource("Animation_iqerj")
 }
 
+[sub_resource type="Animation" id="Animation_8ldow"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
 [sub_resource type="Animation" id="Animation_dqx5i"]
 resource_name = "hit"
 length = 2.0
@@ -116,21 +131,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [false, true, false, true, false, true, false, true, false, true, false, true]
-}
-
-[sub_resource type="Animation" id="Animation_8ldow"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:visible")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_iqerj"]
@@ -148,7 +148,7 @@ size = Vector2(43, 19)
 motion_mode = 1
 script = ExtResource("1_kp3xx")
 acceleration = 900
-friction = 8
+friction = 12
 max_speed = 300
 dash_velocity = 1000
 
